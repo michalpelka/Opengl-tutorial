@@ -5,46 +5,8 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
+#include "Shader.h"
 
-static unsigned int CompileShader(unsigned int type, const std::string& source)
-{
-	unsigned int id = glCreateShader(type);
-	const char *src = source.c_str();
-	glShaderSource(id, 1, &src, nullptr);
-	glCompileShader(id);
-
-	int result;
-	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-	if (result == GL_FALSE)
-	{
-		int length;
-		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-		char* message = (char*) alloca (length * sizeof(char));
-		glGetShaderInfoLog(id, length, &length, message);
-		std::cout << "Failed to compile " << std::endl;
-		std::cout << message << std::endl;
-		glDeleteShader(id);
-		return 0;
-	}
-	//TODO : Error handling
-	return id;
-}
-static unsigned int CreateShader(const std::string &vertexShader, const std::string& fragmentShader)
-{
-	unsigned int program = glCreateProgram();
-	unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
-
-	glAttachShader(program, vs);
-	glAttachShader(program, fs);
-	glLinkProgram(program);
-	glValidateProgram(program);
-
-	glDeleteShader(vs);
-	glDeleteShader(fs);
-
-	return program;
-}
 
 int main(void)
 {
@@ -98,34 +60,12 @@ int main(void)
 		va.AddBuffer(vb, layout);
 
 		IndexBuffer ib(indicies, 6);
-
-		std::string vertexShader =
-			"#version 330 core\n"
-			"layout(location = 0) in vec4 position; \n"
-			"\n"
-			"void main()\n"
-			"{\n"
-			"  gl_Position = position;\n"
-			"}\n";
-		std::string fragmentShader =
-			"#version 330 core\n"
-			"uniform vec4 u_Color;\n"
-			"layout(location = 0) out vec4 color; \n"
-			"\n"
-			"void main()\n"
-			"{\n"
-			"  color = u_Color;\n"
-			"}\n";
-
-		unsigned int shader = CreateShader(vertexShader, fragmentShader);
-		GLCall(glUseProgram(shader));
-		int location = glGetUniformLocation(shader, "u_Color");
-		ASSERT(location != -1);
-		GLCall(glUniform4f(location, 0.2f, 0.3f, 0.5f, 1.0f));
+		Shader shader("res/shaders/Basic.shader");
+		shader.Bind();
 		/* Loop until the user closes the window */
 		float r = 0.0f;
 		float increment = 0.05f;
-
+		shader.setUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
 		GLCall(glUseProgram(0));
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
@@ -136,8 +76,9 @@ int main(void)
 		while (!glfwWindowShouldClose(window))
 		{
 			GLCall(glClear(GL_COLOR_BUFFER_BIT));
-			GLCall(glUseProgram(shader));
-			GLCall(glUniform4f(location, r, 0.3f, 0.5f, 1.0f));
+			shader.Bind();
+			shader.setUniform4f("u_Color", r, 0.3f, 0.5f, 1.0f);
+
 			va.Bind();
 			ib.Bind();
 			GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
@@ -153,7 +94,6 @@ int main(void)
 			glfwPollEvents();
 
 		}
-		glDeleteProgram(shader);
 	}
 	glfwTerminate();
 	return 0;
