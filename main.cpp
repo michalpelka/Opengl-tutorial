@@ -9,6 +9,9 @@
 #include "Shader.h"
 #include "Texture.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 int main(void)
 {
 	GLFWwindow* window;
@@ -56,6 +59,9 @@ int main(void)
 		GLCall(glClearColor(0.4,0.4,0.4,1));
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
+		glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f,1.5f,-1.0f,1.0f);
+
 		VertexArray va;
 		VertexBuffer vb(positions, 4 * 4 * sizeof(float));
 		VertexBufferLayout layout;
@@ -70,6 +76,7 @@ int main(void)
 		float r = 0.0f;
 		float increment = 0.05f;
 		shader.setUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
+		shader.setUniformMat4f("u_MVP", proj);
 		Texture texture("res/textures/cherno_logo.png");
 		texture.Bind();
 		shader.setUniform1i("u_Texture", 0);
