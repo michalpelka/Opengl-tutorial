@@ -76,7 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dep\glfw-3.3.2.bin.WIN32\include\;$(SolutionDir)dep\glew-2.1.0\include\;$(SolutionDir)dep\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dep\glfw-3.3.2.bin.WIN32\include\;$(SolutionDir)dep\glew-2.1.0\include\;$(SolutionDir)dep\imgui\;$(SolutionDir)dep\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -91,7 +91,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dep\glfw-3.3.2.bin.WIN32\include\;$(SolutionDir)dep\glew-2.1.0\include\;$(SolutionDir)dep\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dep\glfw-3.3.2.bin.WIN32\include\;$(SolutionDir)dep\glew-2.1.0\include\;$(SolutionDir)dep\imgui\;$(SolutionDir)dep\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -108,7 +108,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dep\glfw-3.3.2.bin.WIN32\include\;$(SolutionDir)dep\glew-2.1.0\include\;$(SolutionDir)dep\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dep\glfw-3.3.2.bin.WIN32\include\;$(SolutionDir)dep\glew-2.1.0\include\;$(SolutionDir)dep\imgui\;$(SolutionDir)dep\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -127,7 +127,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dep\glfw-3.3.2.bin.WIN32\include\;$(SolutionDir)dep\glew-2.1.0\include\;$(SolutionDir)dep\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dep\glfw-3.3.2.bin.WIN32\include\;$(SolutionDir)dep\glew-2.1.0\include\;$(SolutionDir)dep\imgui\;$(SolutionDir)dep\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -139,21 +139,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dep\imgui\imgui.cpp" />
+    <ClCompile Include="dep\imgui\imgui_demo.cpp" />
+    <ClCompile Include="dep\imgui\imgui_draw.cpp" />
+    <ClCompile Include="dep\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="dep\imgui_impl_glfw.cpp" />
+    <ClCompile Include="dep\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="dep\stb_image.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexBufferLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dep\imgui\imconfig.h" />
+    <ClInclude Include="dep\imgui\imgui.h" />
+    <ClInclude Include="dep\imgui\imgui_internal.h" />
+    <ClInclude Include="dep\imgui\imstb_rectpack.h" />
+    <ClInclude Include="dep\imgui\imstb_textedit.h" />
+    <ClInclude Include="dep\imgui\imstb_truetype.h" />
+    <ClInclude Include="dep\imgui_impl_glfw.h" />
+    <ClInclude Include="dep\imgui_impl_opengl3.h" />
+    <ClInclude Include="dep\stb_image.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexBuffer.h" />
@@ -161,6 +175,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Shader.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="dep\imgui\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
