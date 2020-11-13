@@ -48,31 +48,38 @@ int main(void)
 	{
 
 
-		float positions[16] =
+		const std::vector<float> positions
 		{
-			 -50.0f, -50.0f, 0.0f, 0.0f, // bottom left
-			  50.0f, -50.0f, 1.0f, 0.0f, // bottom right 
-			  50.0f,  50.0f, 1.0f, 1.0f,  // top right
-			 -50.0f,  50.0f, 0.0f, 1.0f // top left
+			 -50.0f, -50.0f, 0.0f, 0.0f,   0.1f,0.0f,1.0f,1.0f, // bottom left
+			  50.0f, -50.0f, 1.0f, 0.0f,   0.1f,0.0f,1.0f,1.0f, // bottom right 
+			  50.0f,  50.0f, 1.0f, 1.0f,   0.1f,0.0f,1.0f,1.0f, // top right
+			 -50.0f,  50.0f, 0.0f, 1.0f,   0.1f,0.0f,1.0f,1.0f, // top left
+
+			 -50.0f, 150.0f - 50.0f, 0.0f, 0.0f, 0.0f,1.0f,0.1f,1.0f, // bottom left
+			  50.0f, 150.0f - 50.0f, 1.0f, 0.0f, 0.0f,1.0f,0.1f,1.0f,// bottom right 
+			  50.0f, 150.0f + 50.0f, 1.0f, 1.0f, 0.0f,1.0f,0.1f,1.0f, // top right
+			 -50.0f, 150.0f + 50.0f, 0.0f, 1.0f, 0.0f,1.0f,0.1f,1.0f,// top left
+
+
 		};
 
-		unsigned int indicies[] =
-		{
-			0,1,2,
-			2,3,0
+		const std::vector<unsigned int> indicies {
+			0,1,2, 2,3,0,
+			4,5,6, 6,7,4,
 		};
 		//GLCall(glClearColor(0.4,0.4,0.4,1));
 		//GLCall(glEnable(GL_BLEND));
 		//GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 		VertexArray va;
-		VertexBuffer vb(positions, 4 * 4 * sizeof(float));
+		VertexBuffer vb(positions.data(), positions.size() * sizeof(float));
 		VertexBufferLayout layout;
 		layout.Push<float>(2);
 		layout.Push<float>(2);
+		layout.Push<float>(4);
 		va.AddBuffer(vb, layout);
 
-		IndexBuffer ib(indicies, 6);
+		IndexBuffer ib(indicies.data(), indicies.size());
 		Shader shader("res/shaders/Basic.shader");
 		shader.Bind();
 		/* Loop until the user closes the window */
@@ -115,7 +122,6 @@ int main(void)
 
 			shader.Bind();
 			
-			
 			{
 				static float f = 0.0f;
 				static int counter = 0;
@@ -140,15 +146,15 @@ int main(void)
 				renderer.Draw(va, ib, shader);
 			}
 			
-			{
-				glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
-				glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
-				glm::mat4 mvp = proj * view * model;
-				shader.Bind();
-				shader.setUniformMat4f("u_MVP", mvp);
-				renderer.Draw(va, ib, shader);
-			}
+			//{
+			//	glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+			//	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+			//	glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
+			//	glm::mat4 mvp = proj * view * model;
+			//	shader.Bind();
+			//	shader.setUniformMat4f("u_MVP", mvp);
+			//	renderer.Draw(va, ib, shader);
+			//}
 
 			if (r > 1.0f)
 				increment = -0.05f;
