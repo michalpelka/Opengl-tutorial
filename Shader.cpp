@@ -8,7 +8,12 @@ Shader::Shader(const std::string& filepath):
 	m_FilePath(filepath), m_RenderID(0)
 {
 	ShaderProgramSource source = ParseShader(filepath);
+	const auto uniform_names = ParseShaderForUniforms(filepath);
 	m_RenderID = CreateShader(source.VertexSource, source.FragmentSource);
+	for (const auto &s : uniform_names)
+	{
+		GetUniformLocation(s);
+	}
 }
 Shader::~Shader()
 {
@@ -40,13 +45,14 @@ void Shader::setUniformMat4f(const std::string& name, const glm::mat4& matrix)
 }
 
 
-unsigned int Shader::GetUniformLocation(const std::string& name)
+unsigned int Shader::GetUniformLocation(const std::string& name) const
 {
 	const auto it = m_UniformLocationCache.find(name);
 	if (it != m_UniformLocationCache.end())
 		return it->second;
 	else
 	{
+		std::cout << "uniform " << name << " is added to cache" << std::endl;
 		GLCall(int location = glGetUniformLocation(m_RenderID, name.c_str()));
 		//ASSERT(location != -1);
 		m_UniformLocationCache[name] = location;
@@ -116,6 +122,34 @@ ShaderProgramSource Shader::ParseShader(const std::string& filepath)
 		{
 			ss[int(type)] << line << '\n';
 		}
+
 	}
 	return {ss[0].str(), ss[1].str()};
+}
+
+
+std::vector<std::string> Shader::ParseShaderForUniforms(const std::string& filepath)
+{
+	std::ifstream stream(filepath);
+	std::vector<std::string> uniforms;
+	std::string line;
+	while (std::getline(stream, line))
+	{
+		if (line.find("uniform") != std::string::npos)
+		{
+			std::stringstream oss(line);
+			std::string uniform;
+			std::string type;
+			std::string name;
+			oss >> uniform;
+			oss >> type;
+			oss >> name;
+			std::string name_no_semi = name.substr(0, name.size() - 1);
+			uniforms.push_back(name_no_semi);
+		}
+	}
+
+
+
+	return uniforms;
 }
