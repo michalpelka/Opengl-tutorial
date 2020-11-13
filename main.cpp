@@ -50,16 +50,15 @@ int main(void)
 
 		const std::vector<float> positions
 		{
-			 -50.0f, -50.0f, 0.0f, 0.0f,   0.1f,0.0f,1.0f,1.0f, // bottom left
-			  50.0f, -50.0f, 1.0f, 0.0f,   0.1f,0.0f,1.0f,1.0f, // bottom right 
-			  50.0f,  50.0f, 1.0f, 1.0f,   0.1f,0.0f,1.0f,1.0f, // top right
-			 -50.0f,  50.0f, 0.0f, 1.0f,   0.1f,0.0f,1.0f,1.0f, // top left
+			 -50.0f, -50.0f, 0.0f, 0.0f,   0.1f,0.0f,1.0f,1.0f,1.0f, // bottom left
+			  50.0f, -50.0f, 1.0f, 0.0f,   0.1f,0.0f,1.0f,1.0f,1.0f, // bottom right 
+			  50.0f,  50.0f, 1.0f, 1.0f,   0.1f,0.0f,1.0f,1.0f,1.0f, // top right
+			 -50.0f,  50.0f, 0.0f, 1.0f,   0.1f,0.0f,1.0f,1.0f,1.0f, // top left
 
-			 -50.0f, 150.0f - 50.0f, 0.0f, 0.0f, 0.0f,1.0f,0.1f,1.0f, // bottom left
-			  50.0f, 150.0f - 50.0f, 1.0f, 0.0f, 0.0f,1.0f,0.1f,1.0f,// bottom right 
-			  50.0f, 150.0f + 50.0f, 1.0f, 1.0f, 0.0f,1.0f,0.1f,1.0f, // top right
-			 -50.0f, 150.0f + 50.0f, 0.0f, 1.0f, 0.0f,1.0f,0.1f,1.0f,// top left
-
+			 -50.0f, 150.0f - 50.0f, 0.0f, 0.0f, 0.0f,1.0f,0.1f,1.0f,2.0f, // bottom left
+			  50.0f, 150.0f - 50.0f, 1.0f, 0.0f, 0.0f,1.0f,0.1f,1.0f,2.0f,// bottom right 
+			  50.0f, 150.0f + 50.0f, 1.0f, 1.0f, 0.0f,1.0f,0.1f,1.0f,2.0f,// top right
+			 -50.0f, 150.0f + 50.0f, 0.0f, 1.0f, 0.0f,1.0f,0.1f,1.0f,2.0f,// top left
 
 		};
 
@@ -77,6 +76,7 @@ int main(void)
 		layout.Push<float>(2);
 		layout.Push<float>(2);
 		layout.Push<float>(4);
+		layout.Push<float>(1);
 		va.AddBuffer(vb, layout);
 
 		IndexBuffer ib(indicies.data(), indicies.size());
@@ -88,9 +88,12 @@ int main(void)
 		shader.setUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
 
 
-		Texture texture("res/textures/cherno_logo.png");
-		texture.Bind();
-		shader.setUniform1i("u_Texture", 0);
+		Texture texture1("res/textures/lena.png");
+		Texture texture2("res/textures/cherno_logo.png");
+
+		texture1.Bind(1);
+		texture2.Bind(2);
+		shader.setUniform1iv("u_Texture", { 0,1,2 });
 		va.Unbind();
 		vb.Unbind();
 		ib.Unbind();
@@ -110,8 +113,7 @@ int main(void)
 		bool show_another_window = false;
 		ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 		glm::vec3 translationA{ 100,100,0 };
-		glm::vec3 translationB{ 100,200,0 };
-		
+
 		while (!glfwWindowShouldClose(window))
 		{
 			GLCall(glClear(GL_COLOR_BUFFER_BIT));
@@ -128,7 +130,6 @@ int main(void)
 
 				ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 				ImGui::SliderFloat3("trans A", &translationA.x, 0.0f, 960.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-				ImGui::SliderFloat3("trans B", &translationB.x, 0.0f, 960.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 
 				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 				ImGui::End();
