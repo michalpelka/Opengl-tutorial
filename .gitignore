@@ -362,3 +362,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 dep/
+cmake-build-debug/
+cmake-build-release/
+build/
+.idea/

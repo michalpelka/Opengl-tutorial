@@ -5,9 +5,12 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
-
+#ifdef _MSC_VER
 #define ASSERT(x) if(!(x)) __debugbreak();
-
+#else
+#include <signal.h>
+#define ASSERT(x) if(!(x))raise(SIGTRAP);
+#endif
 #define GLCall(x) GLClearError();\
 	x;\
 	ASSERT(GLLogCall(#x,__FILE__, __LINE__))

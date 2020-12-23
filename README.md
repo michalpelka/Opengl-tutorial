@@ -13,5 +13,10 @@ What is done:
  - simple batch rendering shader
  
 
-To be done:
- - cmake build enabled for Linux/Mac
+CMake build
+
+```
+sudo apt-get install libglew-dev libglm-dev
+
+
+```

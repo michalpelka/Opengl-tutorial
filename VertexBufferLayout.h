@@ -1,7 +1,7 @@
 #pragma once
-#include <Vector>
+#include <vector>
 #include "Renderer.h"
-#include <GL/GL.h>
+#include <GL/gl.h>
 struct VertexBufferElement
 {
 	unsigned int type;
@@ -27,30 +27,8 @@ public:
 	{
 
 	}
-	template<typename T>
-	void Push(unsigned int count)
-	{
-		static_assert(false);
-	}
-	template<> void Push<float>(unsigned int count)
-	{
-		ASSERT(sizeof(float) == sizeof(GL_FLOAT));
-		m_Elements.push_back({ GL_FLOAT, count, GL_FALSE });
-		m_Stride += count * sizeof(GL_FLOAT);
-	}
-	template<> void Push<unsigned int>(unsigned int count)
-	{
-		ASSERT(sizeof(unsigned int) == sizeof(GL_UNSIGNED_INT));
-		m_Elements.push_back({ GL_UNSIGNED_INT, count, GL_FALSE });
-		m_Stride += count * sizeof(GL_UNSIGNED_INT);
-	}
-	template<> void Push<unsigned char>(unsigned int count)
-	{
-		ASSERT(sizeof(unsigned char) == sizeof(GL_UNSIGNED_BYTE));
-		m_Elements.push_back({ GL_UNSIGNED_BYTE, count, GL_TRUE });
-		m_Stride += count * sizeof(GL_UNSIGNED_BYTE);
-	}
-	inline const std::vector<VertexBufferElement>& GetElements() const {return m_Elements;}
+	template<typename T> void Push(unsigned int count) {;}
+    inline const std::vector<VertexBufferElement>& GetElements() const {return m_Elements;}
 	inline unsigned int GetStride() const { return m_Stride; }
 
 
